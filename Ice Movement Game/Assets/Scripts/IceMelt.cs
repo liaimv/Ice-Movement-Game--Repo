@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class IceMelt : MonoBehaviour
 {
-    private float meltAmount = 0f;
-    public float meltSpeed = 0.2f;
+    public float meltAmount = 0f;
+    private float meltSpeed;
+    public float meltSlowSpeed = 0.1f;
+    public float meltFastSpeed = 0.1f;
     private Vector3 originalScale;
     private Vector3 originalPosition;
 
@@ -18,6 +20,8 @@ public class IceMelt : MonoBehaviour
 
         controllerScript = GetComponentInParent<ThirdPersonController>();
         slidingScript = GetComponentInParent<Sliding>();
+
+        meltSpeed = meltSlowSpeed;
     }
 
     void Update()
@@ -34,6 +38,21 @@ public class IceMelt : MonoBehaviour
             controllerScript.JumpHeight = 0;
             controllerScript._rotationVelocity = 0;
             slidingScript.moveSpeed = 0;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Fire"))
+        {
+            meltSpeed = meltFastSpeed; 
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Fire"))
+        {
+            meltSpeed = meltSlowSpeed;
         }
     }
 
