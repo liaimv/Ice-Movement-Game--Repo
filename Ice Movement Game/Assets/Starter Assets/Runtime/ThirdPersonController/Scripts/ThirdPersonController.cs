@@ -83,7 +83,7 @@ namespace StarterAssets
         private float _speed;
         private float _animationBlend;
         private float _targetRotation = 0.0f;
-        private float _rotationVelocity;
+        public float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
 

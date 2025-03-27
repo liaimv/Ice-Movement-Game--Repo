@@ -1,3 +1,4 @@
+using StarterAssets;
 using UnityEngine;
 
 public class IceMelt : MonoBehaviour
@@ -7,10 +8,16 @@ public class IceMelt : MonoBehaviour
     private Vector3 originalScale;
     private Vector3 originalPosition;
 
+    private ThirdPersonController controllerScript;
+    private Sliding slidingScript;
+
     void Start()
     {
         originalScale = transform.localScale;
         originalPosition = transform.localPosition;
+
+        controllerScript = GetComponentInParent<ThirdPersonController>();
+        slidingScript = GetComponentInParent<Sliding>();
     }
 
     void Update()
@@ -19,6 +26,14 @@ public class IceMelt : MonoBehaviour
         {
             meltAmount += Time.deltaTime * meltSpeed;
             MeltIceCube();
+        }
+        else if (meltAmount > 0.95f)
+        {
+            controllerScript.MoveSpeed = 0;
+            controllerScript.SprintSpeed = 0;
+            controllerScript.JumpHeight = 0;
+            controllerScript._rotationVelocity = 0;
+            slidingScript.moveSpeed = 0;
         }
     }
 
