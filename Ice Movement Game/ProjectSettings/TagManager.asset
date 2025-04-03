@@ -7,6 +7,10 @@ TagManager:
   - CinemachineTarget
   - Hot
   - Cold
+  - Stage2
+  - Stage3
+  - Stage4
+  - Win
   layers:
   - Default
   - TransparentFX
