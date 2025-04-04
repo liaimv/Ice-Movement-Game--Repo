@@ -3,7 +3,12 @@ guid: 85821882a06892a47a38d0753f2a6349
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: brashed_mettal.label
+    second: {fileID: 2100000, guid: 0fd8b365825c4c747b164578af77cf94, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

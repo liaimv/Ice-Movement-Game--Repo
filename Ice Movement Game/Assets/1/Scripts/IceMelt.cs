@@ -1,4 +1,4 @@
-using UnityEditor.PackageManager.Requests;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class IceMelt : MonoBehaviour
@@ -27,6 +27,10 @@ public class IceMelt : MonoBehaviour
     private Vector3 originalPosition;
     private Vector3 checkpointPosition;
 
+    private bool isGameOver = false;
+
+    private bool isMelting = true;
+
     void Start()
     {
         controllerScript = GetComponentInParent<PlayerController>();
@@ -46,23 +50,33 @@ public class IceMelt : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (transform.localScale.x > 0.05f)
+        if (transform.localScale.x > 0.05f && isMelting)
         {
             meltTimer += Time.deltaTime * meltSpeed * meltTimerMultiplier; //Unity doesn't like small numbers, so I multiply the meltSpeed with the meltTimerMultiplier
             meltAmount = meltCurve.Evaluate(meltTimer);
             MeltIceCube();
-
-            gameOverCanvas.gameObject.SetActive(false);
         }
-        else
+        else if (transform.localScale.x <= 0.05f && isMelting)
         {
             controllerScript.playerSpeed = 0;
             controllerScript.jumpForce = 0;
             controllerScript.rotationSpeed = 0;
 
-            gameOverCanvas.gameObject.SetActive(true);
+            isGameOver = true;
 
             transform.position = checkpointPosition;
+        }
+    }
+
+    private void Update()
+    {
+        if (isGameOver)
+        {
+            gameOverCanvas.gameObject.SetActive(true);
+        }
+        else if (!isGameOver)
+        {
+            gameOverCanvas.gameObject.SetActive(false);
         }
     }
 
@@ -107,6 +121,7 @@ public class IceMelt : MonoBehaviour
         {
             checkpointPosition = transform.position;
             ResetSize();
+            isMelting = false;
         }
 
         if (other.gameObject.CompareTag("Win"))
@@ -123,6 +138,8 @@ public class IceMelt : MonoBehaviour
         controllerScript.playerSpeed = originalPlayerSpeed;
         controllerScript.jumpForce = originalJumpForce;
         controllerScript.rotationSpeed = originalRotationSpeed;
+
+        isGameOver = false;
     }
 
     private void ResetSize()
