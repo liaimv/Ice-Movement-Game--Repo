@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class IceMelt : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class IceMelt : MonoBehaviour
 
     public Canvas gameOverCanvas;
     public Canvas gameWinCanvas;
+    public Canvas lastStageCanvas;
 
     private float originalPlayerSpeed;
     private float originalJumpForce;
@@ -46,6 +48,7 @@ public class IceMelt : MonoBehaviour
 
         gameOverCanvas.gameObject.SetActive(false);
         gameWinCanvas.gameObject.SetActive(false);
+        lastStageCanvas.gameObject.SetActive(false);
     }
 
     void FixedUpdate()
@@ -58,9 +61,7 @@ public class IceMelt : MonoBehaviour
         }
         else if (transform.localScale.x <= 0.05f && isMelting)
         {
-            controllerScript.playerSpeed = 0;
-            controllerScript.jumpForce = 0;
-            controllerScript.rotationSpeed = 0;
+            StopMovement();
 
             isGameOver = true;
 
@@ -70,6 +71,7 @@ public class IceMelt : MonoBehaviour
 
     private void Update()
     {
+        //Game over canvas
         if (isGameOver)
         {
             gameOverCanvas.gameObject.SetActive(true);
@@ -77,6 +79,12 @@ public class IceMelt : MonoBehaviour
         else if (!isGameOver)
         {
             gameOverCanvas.gameObject.SetActive(false);
+        }
+
+        //Last stage canvas
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            lastStageCanvas.gameObject.SetActive(false);
         }
     }
 
@@ -122,13 +130,27 @@ public class IceMelt : MonoBehaviour
             checkpointPosition = transform.position;
             ResetSize();
             isMelting = false;
+
+            //Play Fanfare audio
+            AudioSource audio = other.GetComponent<AudioSource>();
+            audio.Play();
+
+            lastStageCanvas.gameObject.SetActive(true);
         }
 
         if (other.gameObject.CompareTag("Win"))
         {
             gameWinCanvas.gameObject.SetActive(true);
             ResetSize();
+            StopMovement();
         }
+    }
+
+    public void StopMovement()
+    {
+        controllerScript.playerSpeed = 0;
+        controllerScript.jumpForce = 0;
+        controllerScript.rotationSpeed = 0;
     }
 
     public void ResetGame()

@@ -60,7 +60,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Ice_Alpha: 0.81
-    - _Ice_Slider: 0.8
+    - _Ice_Slider: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RefractionAmount: -0.15
