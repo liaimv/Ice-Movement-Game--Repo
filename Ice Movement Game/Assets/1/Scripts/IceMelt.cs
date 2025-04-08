@@ -64,8 +64,6 @@ public class IceMelt : MonoBehaviour
             StopMovement();
 
             isGameOver = true;
-
-            transform.position = checkpointPosition;
         }
     }
 
@@ -134,10 +132,6 @@ public class IceMelt : MonoBehaviour
             ResetSize();
             isMelting = false;
 
-            //Play Fanfare audio
-            AudioSource audio = other.GetComponent<AudioSource>();
-            audio.Play();
-
             lastStageCanvas.gameObject.SetActive(true);
 
             StopMovement();
@@ -148,6 +142,10 @@ public class IceMelt : MonoBehaviour
             gameWinCanvas.gameObject.SetActive(true);
             ResetSize();
             StopMovement();
+
+            //Play Fanfare audio
+            AudioSource audio = other.GetComponent<AudioSource>();
+            audio.Play();
         }
     }
 
@@ -176,6 +174,7 @@ public class IceMelt : MonoBehaviour
         ResetMovement();
 
         isGameOver = false;
+        transform.position = checkpointPosition;
     }
 
     public void ResetMovement()
