@@ -28,6 +28,10 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         cameraMainTransform = Camera.main.transform;
+
+        //Remove cursor visibility and keep it at the center, so that rotation can still occur even when the cursor reaches the end of the screen
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update() // Input handling in Update

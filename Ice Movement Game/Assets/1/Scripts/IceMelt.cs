@@ -75,16 +75,19 @@ public class IceMelt : MonoBehaviour
         if (isGameOver)
         {
             gameOverCanvas.gameObject.SetActive(true);
+            CursorOn();
         }
         else if (!isGameOver)
         {
             gameOverCanvas.gameObject.SetActive(false);
+            CursorOff();
         }
 
         //Last stage canvas
         if (Input.GetKeyDown(KeyCode.Return))
         {
             lastStageCanvas.gameObject.SetActive(false);
+            ResetMovement();
         }
     }
 
@@ -136,6 +139,8 @@ public class IceMelt : MonoBehaviour
             audio.Play();
 
             lastStageCanvas.gameObject.SetActive(true);
+
+            StopMovement();
         }
 
         if (other.gameObject.CompareTag("Win"))
@@ -146,6 +151,17 @@ public class IceMelt : MonoBehaviour
         }
     }
 
+    private void CursorOn()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void CursorOff()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     public void StopMovement()
     {
         controllerScript.playerSpeed = 0;
@@ -157,11 +173,16 @@ public class IceMelt : MonoBehaviour
     {
 
         ResetSize();
+        ResetMovement();
+
+        isGameOver = false;
+    }
+
+    public void ResetMovement()
+    {
         controllerScript.playerSpeed = originalPlayerSpeed;
         controllerScript.jumpForce = originalJumpForce;
         controllerScript.rotationSpeed = originalRotationSpeed;
-
-        isGameOver = false;
     }
 
     private void ResetSize()
